@@ -5,7 +5,7 @@
     "Lydon Gray <lydongray@gmail.com>"
   ],
   "description": "An AngularJS module that uses the publish/subscribe pattern allowing your controllers to listen for events in your factories/directives/etc",
-  "main": "dist/ngPubSub.js",
+  "main": "./dist/ngPubSub.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/lydongray/ng-pub-sub.git"
