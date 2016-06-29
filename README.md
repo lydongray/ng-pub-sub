@@ -103,7 +103,8 @@ angular.module('myApp', [
 ```
 
 ### $on
-Creates a new subscriber. This acts as a listener, waiting for the message to be sent. You have the option of providing $scope. This is only necessary if you want ng-pub-sub to clean up subscriptions when the controller is destryed. You can clean up subscriptions manually if required (see $off).
+Creates a new subscriber. This acts as a listener, waiting for the message to be sent. You can create multiple subscriptions with the same name. Each subscription returns and id, which you can use to unsubscribe individual subscriptions.
+> You have the option of providing $scope. This is only necessary if you want ng-pub-sub to clean up subscriptions when the controller is destryed. You can clean up subscriptions manually if required (see $off).
 
 **$on with $scope**
 ```javascript
@@ -113,7 +114,7 @@ angular.module('myApp', [
     $scope,
     userService
 ){
-    userService.$on('getUsers', function(users) {
+    var id = userService.$on('getUsers', function(users) {
       vm.users = users;
     }, $scope);
 });
@@ -157,7 +158,27 @@ angular.module('myApp', [
 ```
 
 ### $off
-Removes subscriptions. Provide a subscription name and all subscriptions of that name will be removed. Provide a scope and all subscriptions from that scope will be removed.
+Removes subscriptions. There's 3 ways to do this:
+
+1. Provide the subscription id - a single subscription will be removed
+2. Provide a subscription name - all subscriptions of that name will be removed
+3. Provide a scope - all subscriptions from that scope will be removed.
+
+**$off with id**
+```javascript
+angular.module('myApp', [
+    'ng-pub-sub'
+]).controller('MainCtrl', function(
+    $scope,
+    userService
+){
+    var id = userService.$on('getUsers', function(users) {
+      vm.users = users;
+    }, $scope);
+
+    userService.$off(id);
+});
+```
 
 **$off with name**
 ```javascript

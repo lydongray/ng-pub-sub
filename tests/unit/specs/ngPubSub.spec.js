@@ -80,6 +80,12 @@ describe('Testing PubSub Provider', function () {
             userService.$off('getUsers');
             expect(userService.$callbacks('getUsers').length).toEqual(0);
         });
+        it('deletes subscription given id', function() {
+            var id = userService.$on('getUsers', function() { }, scope);
+            expect(userService.$callbacks('getUsers').length).toEqual(3);
+            userService.$off(id);
+            expect(userService.$callbacks('getUsers').length).toEqual(2);
+        });
         it('unsubscribes when controller is destroyed', function() {
             userService.$on('getUsers', function() { }, scope2);
             expect(userService.$callbacks(scope).length).toEqual(2);
