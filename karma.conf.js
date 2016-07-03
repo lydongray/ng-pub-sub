@@ -53,7 +53,8 @@ module.exports = function(config) {
         plugins: [
             'karma-jasmine',
             'karma-mocha-reporter',
-            'karma-chrome-launcher'
+            'karma-chrome-launcher',
+            'karma-firefox-launcher'
         ],
 
 
@@ -98,20 +99,12 @@ module.exports = function(config) {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity,
-
-
-        // Travis-ci Custom launcher
-        // Sets up custom launcher config for Travis-ci
-        customLaunchers: {
-            Chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
-            }
-        },
     };
 
     if (process.env.TRAVIS) {
-        configuration.browsers = ['Chrome_travis_ci'];
+        //configuration.browsers = ['Chrome_travis_ci'];
+        // Use Firefox for travis-ci
+        configuration.browsers = ['Firefox'];
     }
 
     config.set(configuration)
