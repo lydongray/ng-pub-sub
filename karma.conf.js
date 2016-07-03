@@ -40,6 +40,19 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            'src/**/*.js': ['babel']
+        },
+        babelPreprocessor: {
+            options: {
+                presets: ['es2015'],
+                sourceMap: 'inline'
+            },
+            filename: function (file) {
+                return file.originalPath.replace(/\.js$/, '.es5.js');
+            },
+            sourceFileName: function (file) {
+                return file.originalPath;
+            }
         },
 
 
@@ -54,7 +67,8 @@ module.exports = function(config) {
             'karma-jasmine',
             'karma-mocha-reporter',
             'karma-chrome-launcher',
-            'karma-firefox-launcher'
+            'karma-firefox-launcher',
+            'karma-babel-preprocessor'
         ],
 
 
@@ -102,8 +116,7 @@ module.exports = function(config) {
     };
 
     if (process.env.TRAVIS) {
-        //configuration.browsers = ['Chrome_travis_ci'];
-        // Use Firefox for travis-ci
+        // Use Firefox for travis-ci (has better support)
         configuration.browsers = ['Firefox'];
     }
 
