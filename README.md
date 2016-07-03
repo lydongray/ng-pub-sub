@@ -1,5 +1,6 @@
 # ng-pub-sub
-=========
+
+[![Build Status](https://travis-ci.org/lydongray/ng-pub-sub.svg?branch=master)](https://travis-ci.org/lydongray/ng-pub-sub)
 
 An [AngularJS](https://github.com/angular/angular.js) module that uses the publish/subscribe pattern allowing your controllers to listen for events in your factories/directives/controllers/etc. You get a single provider: `$pubSub`.
 
