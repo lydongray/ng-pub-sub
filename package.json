@@ -1,13 +1,13 @@
 {
   "name": "ng-pub-sub",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "An AngularJS module that uses the publish/subscribe pattern allowing your controllers to listen for events in your factories/directives/etc",
   "main": "./dist/ngPubSub.min.js",
   "author": "Lydon Gray <lydongray@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/lydongray/ng-pub-sub",
   "scripts": {
-    "test": "karma start karma.conf.js"
+    "test": "karma start karma.conf.js --single-run"
   },
   "repository": {
     "type": "git",

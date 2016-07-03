@@ -2,7 +2,8 @@
 // Generated on Fri Apr 15 2016 10:23:58 GMT+1000 (AUS Eastern Standard Time)
 
 module.exports = function(config) {
-    config.set({
+
+    var configuration = {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: './',
@@ -21,7 +22,6 @@ module.exports = function(config) {
             'src/ngPubSub.module.js',
             'src/ngPubSub.config.js',
             'src/ngPubSub.provider.js',
-            //'dist/ngPubSub.js',
 
             'tests/unit/specs/userModule.js',
             'tests/unit/specs/userConfig.js',
@@ -94,8 +94,25 @@ module.exports = function(config) {
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: false,
 
+
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: Infinity
-    })
+        concurrency: Infinity,
+
+
+        // Travis-ci Custom launcher
+        // Sets up custom launcher config for Travis-ci
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+    };
+
+    if (process.env.TRAVIS) {
+        configuration.browsers = ['Chrome_travis_ci'];
+    }
+
+    config.set(configuration)
 }
