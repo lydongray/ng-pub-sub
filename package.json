@@ -1,6 +1,6 @@
 {
   "name": "ng-pub-sub",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "An AngularJS module that uses the publish/subscribe pattern allowing your controllers to listen for events in your factories/directives/etc",
   "main": "./dist/ng-pub-sub.js",
   "author": "Lydon Gray <lydongray@gmail.com>",
