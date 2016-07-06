@@ -1,11 +1,11 @@
 {
   "name": "ng-pub-sub",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "authors": [
     "Lydon Gray <lydongray@gmail.com>"
   ],
   "description": "An AngularJS module that uses the publish/subscribe pattern allowing your controllers to listen for events in your factories/directives/etc",
-  "main": "./dist/ngPubSub.min.js",
+  "main": "./dist/ng-pub-sub.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/lydongray/ng-pub-sub.git"

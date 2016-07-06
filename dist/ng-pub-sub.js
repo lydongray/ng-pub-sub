@@ -76,7 +76,8 @@
         //     }
         // }
 
-        var subscriptions = {};
+        var subscriptions = {},
+            callbackId = 0;
 
         // // Declare any accessable members for the service.
 
@@ -130,8 +131,10 @@
             var subscription = subscriptions[name] || {
                 callbacks: []
             };
+            callbackId++;
 
             subscription.callbacks.push({
+                id: callbackId,
                 scope: scope,
                 func: func,
                 once: config.once || false
@@ -149,6 +152,8 @@
             if (!subscriptionExists) {
                 subscriptions[name] = subscription;
             }
+
+            return callbackId;
         }
 
         /**
@@ -185,19 +190,25 @@
             * @desc Deletes or unsubscribes subscriptions. If providing a name,
                 it will delete all subscriptions of that name. If providing a scope, it
                 will only delete subscriptions associated with that scope.
-            * @param {Object} nameOrScope - Ether the name of the
+            * @param {Object} subscriptionParam - Ether id, the name of the
                 subscription or a scope object.
             * @memberOf ngPubSub.Provider
             */
-        function $delete(nameOrScope) {
-            if (angular.isObject(nameOrScope)) {
+        function $delete(subscriptionParam) {
+            if (angular.isNumber(subscriptionParam)) {
                 deleteSubscriptions({
-                    scope: nameOrScope
+                    id: subscriptionParam
                 });
             } else {
-                deleteSubscriptions({
-                    name: nameOrScope
-                });
+                if (angular.isObject(subscriptionParam)) {
+                    deleteSubscriptions({
+                        scope: subscriptionParam
+                    });
+                } else {
+                    deleteSubscriptions({
+                        name: subscriptionParam
+                    });
+                }
             }
         }
 
@@ -244,19 +255,26 @@
         function deleteSubscriptions() {
             var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
+            var id = _ref.id;
             var scope = _ref.scope;
             var name = _ref.name;
-
 
             for (var key in subscriptions) {
                 if (subscriptions.hasOwnProperty(key)) {
                     var subscription = subscriptions[key];
-
                     var callbacks = subscription.callbacks;
-                    subscription.callbacks = callbacks.filter(function (callback) {
+
+                    // Filter callbacks if id is provided
+                    subscription.callbacks = callbacks = callbacks.filter(function (callback) {
+                        return !id || callback.id !== id;
+                    });
+
+                    // Filter callbacks if scope is provided
+                    subscription.callbacks = callbacks = callbacks.filter(function (callback) {
                         return !scope || callback.scope !== scope;
                     });
 
+                    // Delete subscription if name is provided
                     if (name) {
                         delete subscriptions[name];
                     }

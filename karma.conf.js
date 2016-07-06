@@ -19,14 +19,14 @@ module.exports = function(config) {
             'bower_components/angular/angular.js',
             'bower_components/angular-mocks/angular-mocks.js',
 
-            'src/ngPubSub.module.js',
-            'src/ngPubSub.config.js',
-            'src/ngPubSub.provider.js',
+            'src/ng-pub-sub.module.js',
+            'src/ng-pub-sub.config.js',
+            'src/ng-pub-sub.provider.js',
 
-            'tests/unit/specs/userModule.js',
-            'tests/unit/specs/userConfig.js',
-            'tests/unit/specs/userService.js',
-            'tests/unit/specs/userController.js',
+            'tests/unit/specs/user.module.js',
+            'tests/unit/specs/user.config.js',
+            'tests/unit/specs/user.service.js',
+            'tests/unit/specs/user.controller.js',
 
             'tests/unit/**/*.spec.js',
         ],

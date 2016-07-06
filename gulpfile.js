@@ -12,7 +12,7 @@ var annotate = require('gulp-ng-annotate');
 var babel = require('gulp-babel');
 //var angularFilesort = require('gulp-angular-filesort'); // TODO: Not supporting ES6, find alternative
 
-var appName = 'ngPubSub';
+var appName = 'ng-pub-sub';
 var buildEnv = 'dev';
 var inputRoot = '';
 var outputRoot = 'dist/';
@@ -28,7 +28,7 @@ function setPaths(env) {
     paths = {
         input: {
             js: {
-                all: [inputRoot + 'src/ngpubSub.module.js', inputRoot + 'src/ngpubSub.config.js', inputRoot + 'src/ngpubSub.provider.js']
+                all: [inputRoot + 'src/ng-pub-sub.module.js', inputRoot + 'src/ng-pub-sub.config.js', inputRoot + 'src/ng-pub-sub.provider.js']
                 //all: [inputRoot + 'src/**/*.js'] // TODO: Use with angularFileSort when supported
             }
         },
