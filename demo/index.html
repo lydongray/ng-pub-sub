@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="styles/app.css"/>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+        <script src="../src/ngPubSub.module.js"></script>
+        <script src="../src/ngPubSub.config.js"></script>
+        <script src="../src/ngPubSub.provider.js"></script>
+        <script src="scripts/app.js"></script>
+    </head>
+    <body ng-app="demoApp" ng-controller="MainCtrl as main" class="well">
+
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="page-header">
+            <h1>{{ main.appName }} <small>example</small></h1>
+            <p>In this example, there are two controllers. The List Controller waits for
+            changes made by the Publish Controller.</p>
+        </div>
+        
+        <div class="row"> 
+          <div ng-controller="PublishCtrl as publish" class="col-xs-6 well">
+            <h4>Publish Controller</h4>
+            <form class="form-inline" ng-submit="publish.publish(main.user)">
+              <div class="form-group">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="First name"
+                  ng-model="publish.user.firstName">
+              </div>
+              <div class="form-group">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Surname"
+                  ng-model="publish.user.lastName">
+              </div>
+              <button 
+                type="submit" 
+                class="btn btn-default"
+                ng-click="publish.publish(publish.user)">Publish</button>
+            </form>
+          </div>
+          <div ng-controller="ListCtrl as list" class="col-xs-6 well">
+            <h4>List Controller</h4>
+            <ul class="list-unstyled">
+                <li ng-repeat="user in list.users">{{ user.firstName + ' ' + user.lastName }}</li>
+            </ul>
+          </div>
+        </div>
+
+    </body>
+</html>
