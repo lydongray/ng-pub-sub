@@ -10,12 +10,17 @@ var runSequence = require('run-sequence');
 var concat = require('gulp-concat');
 var annotate = require('gulp-ng-annotate');
 var babel = require('gulp-babel');
-//var angularFilesort = require('gulp-angular-filesort'); // TODO: Not supporting ES6, find alternative
+var header = require('gulp-header');
+var prompt = require('gulp-prompt');
+var semver = require('semver');
+var jeditor = require("gulp-json-editor");
+var pkg = require('./package.json');
 
 var appName = 'ng-pub-sub';
 var buildEnv = 'dev';
-var inputRoot = '';
-var outputRoot = 'dist/';
+var root = './';
+var outputDist = root + 'dist/';
+var newVersion = '';
 var paths = {};
 var configs = {};
 
@@ -28,13 +33,16 @@ function setPaths(env) {
     paths = {
         input: {
             js: {
-                all: [inputRoot + 'src/ng-pub-sub.module.js', inputRoot + 'src/ng-pub-sub.config.js', inputRoot + 'src/ng-pub-sub.provider.js']
-                //all: [inputRoot + 'src/**/*.js'] // TODO: Use with angularFileSort when supported
+                all: [
+                    root + 'src/ng-pub-sub.module.js', 
+                    root + 'src/ng-pub-sub.config.js', 
+                    root + 'src/ng-pub-sub.provider.js']
             }
         },
         output: {
-            root: outputRoot,
-            modules: outputRoot + 'modules'
+            root: root,
+            dist: outputDist,
+            modules: outputDist + 'modules'
         }
     };
 };
@@ -60,8 +68,52 @@ function setConfigs() {
 // Cleans the output (deletes all files)
 gulp.task('clean', function () {
     return del([
-        paths.output.root + '*'
+        paths.output.dist + '*'
     ]);
+});
+
+// Bumps the version number for the package.json and bower.json files
+gulp.task('bumpVersion', function() {
+    return gulp.src('')
+        .pipe(prompt.prompt({
+            type: 'list',
+            name: 'bump',
+            message: 'What type of version bump would you like to make?',
+            choices: [
+                'patch (' + pkg.version + ' --> ' + semver.inc(pkg.version, 'patch') + ')',
+                'minor (' + pkg.version + ' --> ' + semver.inc(pkg.version, 'minor') + ')',
+                'major (' + pkg.version + ' --> ' + semver.inc(pkg.version, 'major') + ')',
+                'none'
+            ]
+        }, function(res) {
+            if(res.bump.match(/^patch/)) {
+                newVersion = semver.inc(pkg.version, 'patch');
+            } else if(res.bump.match(/^minor/)) {
+                newVersion = semver.inc(pkg.version, 'minor');
+            } else if(res.bump.match(/^major/)) {
+                newVersion = semver.inc(pkg.version, 'major');
+            } else {
+                newVersion = pkg.version;
+            }
+        }));
+});
+
+// Updates the version in package.json
+gulp.task('updatePackage', function() {
+    return gulp.src('package.json')
+        .pipe(jeditor({
+            'version': newVersion
+        }))
+        .pipe(gulp.dest(paths.output.root))
+});
+
+// Updates the version in bower.json
+gulp.task('updateBower', function() {
+    return gulp.src('bower.json')
+        .pipe(jeditor({
+            'version': newVersion
+        }))
+        .pipe(gulp.dest(paths.output.root));
 });
 
 // Check for coding mistakes
@@ -89,28 +141,41 @@ gulp.task('unit-test', function (done) {
 
 // Build files
 gulp.task('build-files', ['clean'], function() {
+    var banner = ['/**',
+        ' * <%= pkg.name %> - <%= pkg.description %>',
+        ' * @version v' + (newVersion ? newVersion : '<%= pkg.version %>'),
+        ' * @link <%= pkg.homepage %>',
+        ' * @license <%= pkg.license %>',
+        ' * @author <%= pkg.author %>',
+        ' */',
+        ''].join('\n');
+
     return gulp.src(paths.input.js.all)
         // Output modules
         .pipe(gulp.dest(paths.output.modules))
         // Concat
-        //.pipe(angularFilesort()) // TODO: Not supporting ES6, find alternative
         .pipe(concat(appName + '.js'))
         // Convert es6 to es5
         .pipe(babel(configs.babel))
         // Annotate
         .pipe(annotate(configs.annotate))
+        // Include header
+        .pipe(header(banner, { pkg: pkg }))
         // Output
-        .pipe(dest(paths.output.root))
-        //Minify
+        .pipe(dest(paths.output.dist))
+        // Uglify/Minify
         .pipe(uglify(configs.uglify))
+        // Include header
+        .pipe(header(banner, { pkg: pkg }))
+        // Rename to .min.js
         .pipe(rename(appName + '.min.js'))
         // Output
-        .pipe(dest(paths.output.root));
+        .pipe(dest(paths.output.dist));
 });
 
 // Build 
 gulp.task('build', function (done) {
-    runSequence('clean', ['lint', 'jscs', 'unit-test'], 'build-files', function () {
+    runSequence('clean', 'bumpVersion', ['updatePackage', 'updateBower', 'lint', 'jscs', 'unit-test'], 'build-files', function () {
         done();
     });
 });

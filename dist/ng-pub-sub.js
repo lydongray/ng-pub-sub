@@ -1,3 +1,10 @@
+/**
+ * ng-pub-sub - An AngularJS module that uses the publish/subscribe pattern allowing your controllers to listen for events in your factories/directives/etc
+ * @version v1.1.1
+ * @link https://github.com/lydongray/ng-pub-sub
+ * @license MIT
+ * @author Lydon Gray <lydongray@gmail.com>
+ */
 'use strict';
 
 /**

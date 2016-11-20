@@ -1,6 +1,6 @@
 {
   "name": "ng-pub-sub",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An AngularJS module that uses the publish/subscribe pattern allowing your controllers to listen for events in your factories/directives/etc",
   "main": "./dist/ng-pub-sub.js",
   "author": "Lydon Gray <lydongray@gmail.com>",
@@ -29,13 +29,15 @@
     "bower": "~1.4.1",
     "del": "^2.2.0",
     "gulp": "~3.9.0",
-    "gulp-angular-filesort": "^1.1.1",
     "gulp-babel": "^6.1.2",
     "gulp-clean": "~0.3.1",
     "gulp-concat": "^2.6.0",
+    "gulp-header": "^1.8.8",
     "gulp-jscs": "^3.0.2",
     "gulp-jshint": "^2.0.1",
+    "gulp-json-editor": "^2.2.1",
     "gulp-ng-annotate": "^2.0.0",
+    "gulp-prompt": "^0.2.0",
     "gulp-rename": "~1.2.2",
     "gulp-uglify": "^1.5.3",
     "jasmine-core": "~2.3.4",
@@ -49,6 +51,7 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "~0.3.5",
     "karma-mocha-reporter": "^2.0.3",
-    "run-sequence": "^1.2.1"
+    "run-sequence": "^1.2.1",
+    "semver": "^5.3.0"
   }
 }
